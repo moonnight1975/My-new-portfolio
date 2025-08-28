@@ -1,16 +1,201 @@
-p.one, p.two{
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+p.one{
+    color: wheat;
+    text-align: center;
+    height:;
+}
+p.two{
     /* From https://css.glass */
     color: wheat;
     text-align: center;
-    height: max(10px, 50px);
+
+}
+
+ p.three{
     /* From https://css.glass */
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(2.2px);
-    -webkit-backdrop-filter: blur(2.2px);
-    border: 1px solid rgba(255, 255, 255, 1);
+    color: wheat;
+    text-align: center;
+
+}
+.background{
+    .background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* centers it */
+
+        width: 350px;   /* card size */
+        height: 150px;  /* adjust height */
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        background: linear-gradient(90deg, #23a6d5, #23d5ab, #ee7752, #e73c7e);
+        background-size: 300% 300%;
+        animation: gradient 8s ease infinite;
+
+        border-radius: 25px; /* smooth corners */
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+
+        color: white;   /* text color */
+        font-size: 18px;
+        font-family: Arial, sans-serif;
+        font-weight: 500;
+    }
+
+}
+
+@keyframes gradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+@keyframes morph {
+    0%,
+    100%{transform: perspective(100px)  rotateY(0deg) scale(1);}
+    50%{transform: perspective(100px)  rotateY(5deg) scale(1.02);}
+
+    
+}
+
+.about-section {
+    width: 100%;
+    height: 100vh;
+    background: url("mountain.jpg") no-repeat center center/cover; /* add your bg */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    width: 320px;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.4);
+    margin-bottom: 15px;
+}
+
+.about-card h2 {
+    margin: 10px 0 5px;
+}
+
+.about-card h4 {
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.about-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.socials {
+    margin-bottom: 20px;
+}
+
+.socials a {
+    margin: 0 10px;
+    color: white;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    color: #23d5ab;
+}
+
+.contact-btn {
+    background: linear-gradient(90deg, #23a6d5, #23d5ab);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+
+.contact-btn:hover {
+    transform: scale(1.05);
+}
+.navbar {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1000px;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 10px 30px;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #23d5ab;
 }
 body{
     background-color: black;
+}
+h1{
+    color: white;
+    text-align: center;
+    margin-top: 20px;
 }
