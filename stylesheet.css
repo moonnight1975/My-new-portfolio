@@ -1,8 +1,15 @@
-h1{
+p.one, p.two{
+    /* From https://css.glass */
     color: wheat;
-}
-h2{
-   color: wheat;
+    text-align: center;
+    height: max(10px, 50px);
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2.2px);
+    -webkit-backdrop-filter: blur(2.2px);
+    border: 1px solid rgba(255, 255, 255, 1);
 }
 body{
     background-color: black;
