@@ -2,30 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="SYTLEPROJ.css">
+    <title>Projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
+        /* Put spline in background */
+        spline-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* behind everything */
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+            z-index: 2;
+        }
+
+        .card {
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .card-details {
+            text-align: center;
+        }
+
+        .project-image {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .text-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .text-body {
+            font-size: 0.95rem;
+            color: #bbb;
+            margin-bottom: 15px;
+        }
+
+        .card-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+
+        .card-button:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+    </style>
 </head>
-<!-- From Uiverse.io by alexruix -->
-<div class="card">
-    <div class="card-details">
-        <img src="port.png" alt="portfolio" class="project-image">
-        <p class="text-title">Portfolio website</p>
-        <p class="text-body">Here are the details of the card</p>
+<body>
+
+<!-- Background 3D Spline -->
+<spline-viewer url="https://prod.spline.design/zEXEFqIokKEI5hpO/scene.splinecode"></spline-viewer>
+
+<!-- Floating Cards -->
+<div class="cards-container">
+    <!-- Card 1 -->
+    <div class="card">
+        <div class="card-details">
+            <img src="port.png" alt="portfolio" class="project-image">
+            <p class="text-title">Portfolio Website</p>
+            <p class="text-body">A personal portfolio showcasing my projects and skills.</p>
+        </div>
+        <a href="https://litto.vercel.app/" target="_blank">
+            <button class="card-button">More Info</button>
+        </a>
     </div>
-    <a href="https://litto.vercel.app/" target="_blank">
-    <button class="card-button">More info</button></a>
+
+    <!-- Card 2 -->
+    <div class="card">
+        <div class="card-details">
+            <p class="text-title">Digital Contact Book</p>
+            <p class="text-body">A simple app to store and manage contacts.</p>
+        </div>
+        <button class="card-button">More Info</button>
+    </div>
 </div>
 
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">Digital Contact Book</p>
-        <p class="text-body">Here are the details of the card</p>
-    </div>
-
-    <button class="card-button2">More info</button>
-</div>
-
+</body>
 </html>

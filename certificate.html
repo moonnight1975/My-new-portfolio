@@ -2,77 +2,190 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="SYTLEPROJ.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        /* Grid container */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Unified Card */
+        .card {
+            position: relative;
+            height: 420px;
+            overflow: hidden;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid #444;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Overlay shimmer */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+        .card:hover::before {
+            top: -20%;
+            left: -20%;
+            transform: rotate(15deg);
+        }
+
+        /* Image */
+        .card img {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            height: auto;
+            border-radius: 12px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        .card:hover img {
+            transform: translateX(-50%) translateY(-20px) scale(1.1);
+            opacity: 0.8;
+        }
+
+        /* Content */
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+            text-align: center;
+        }
+        .card:hover .card-content {
+            transform: translateY(0%);
+        }
+
+        .text-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .text-body {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .card-button {
+            display: inline-block;
+            padding: 10px 14px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+        .card-button:hover {
+            background: #0056b3;
+        }
+
+        /* Spline viewer responsive */
+        spline-viewer {
+            width: 100%;
+            height: 400px;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+    </style>
 </head>
-<!-- From Uiverse.io by alexruix -->
-<div class="card">
-    <div class="card-details">
-        <img src="port.png" alt="portfolio" class="project-image">
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
+<body>
+
+<!-- First Card -->
+<div class="card-container">
+    <div class="card">
+        <img src="port.png" alt="portfolio">
+        <div class="card-content">
+            <p class="text-title">Certificate</p>
+            <p class="text-body">Here are the details of the card</p>
+            <a href="https://litto.vercel.app/" target="_blank" class="card-button">More info</a>
+        </div>
     </div>
-    <a href="https://litto.vercel.app/" target="_blank">
-        <button class="card-button">More info</button></a>
 </div>
 
+<!-- 3D Spline Viewer -->
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
 <spline-viewer url="https://prod.spline.design/zEXEFqIokKEI5hpO/scene.splinecode"></spline-viewer>
 
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
+<!-- More Cards -->
+<div class="card-container">
+    <div class="card">
+        <img src="port.png" alt="portfolio">
+        <div class="card-content">
+            <p class="text-title">Certificate</p>
+            <p class="text-body">Here are the details of the card</p>
+            <button class="card-button">More info</button>
+        </div>
     </div>
 
-    <button class="card-button2">More info</button>
-</div>
-
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
+    <div class="card">
+        <img src="port.png" alt="portfolio">
+        <div class="card-content">
+            <p class="text-title">Certificate</p>
+            <p class="text-body">Here are the details of the card</p>
+            <button class="card-button">More info</button>
+        </div>
     </div>
 
-    <button class="card-button2">More info</button>
-</div>
-
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
+    <div class="card">
+        <img src="port.png" alt="portfolio">
+        <div class="card-content">
+            <p class="text-title">Certificate</p>
+            <p class="text-body">Here are the details of the card</p>
+            <button class="card-button">More info</button>
+        </div>
     </div>
 
-    <button class="card-button2">More info</button>
-</div>
-
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
+    <div class="card">
+        <img src="port.png" alt="portfolio">
+        <div class="card-content">
+            <p class="text-title">Certificate</p>
+            <p class="text-body">Here are the details of the card</p>
+            <button class="card-button">More info</button>
+        </div>
     </div>
-
-    <button class="card-button2">More info</button>
 </div>
 
-<div class="card2">
-    <div class="card-details2">
-
-
-        <p class="text-title">certificate</p>
-        <p class="text-body">Here are the details of the card</p>
-    </div>
-
-    <button class="card-button2">More info</button>
-</div>
-
+</body>
 </html>
