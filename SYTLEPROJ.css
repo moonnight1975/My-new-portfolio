@@ -135,3 +135,11 @@ body{
     transform: translate(-50%, 50%);
     opacity: 1;
 }
+
+.model3d {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50vw;
+    height: 100vh;
+}
