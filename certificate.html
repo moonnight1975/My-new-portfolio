@@ -3,33 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Litto's Portfolio</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
-            background: #111;
             color: #fff;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Grid container */
+        /* ===== 3D BACKGROUND ===== */
+        #bg-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Dark overlay for readability */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: -1;
+        }
+
+        /* ===== CARD CONTAINER ===== */
         .card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 1200px;
+            margin-top: 60px;
         }
 
-        /* Unified Card */
+        /* ===== CARD STYLE ===== */
         .card {
             position: relative;
             height: 420px;
@@ -37,14 +63,15 @@
             border-radius: 16px;
             background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 2px solid #444;
+            backdrop-filter: blur(4px);
         }
         .card:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 123, 255, 0.4);
         }
 
-        /* Overlay shimmer */
         .card::before {
             content: "";
             position: absolute;
@@ -62,7 +89,7 @@
             transform: rotate(15deg);
         }
 
-        /* Image */
+        /* ===== CARD IMAGE ===== */
         .card img {
             position: absolute;
             top: 20px;
@@ -75,16 +102,16 @@
         }
         .card:hover img {
             transform: translateX(-50%) translateY(-20px) scale(1.1);
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
-        /* Content */
+        /* ===== CARD CONTENT ===== */
         .card-content {
             position: absolute;
             bottom: 0;
             width: 100%;
             padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
             transform: translateY(100%);
             transition: transform 0.5s ease;
             text-align: center;
@@ -120,63 +147,65 @@
             background: #0056b3;
         }
 
-        /* Spline viewer responsive */
-        spline-viewer {
-            width: 100%;
-            height: 400px;
-            margin: 30px 0;
-            border-radius: 12px;
-            overflow: hidden;
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .card {
+                height: 360px;
+            }
+            .text-title {
+                font-size: 18px;
+            }
+            .text-body {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- First Card -->
+<!-- === 3D Background === -->
+<div id="bg-3d">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/zEXEFqIokKEI5hpO/scene.splinecode"></spline-viewer>
+</div>
+<div id="overlay"></div>
+
+<!-- === Certificates Section === -->
 <div class="card-container">
+
     <div class="card">
         <img src="googlecerti.png" alt="Google Certificate">
         <div class="card-content">
-            <p class="text-title">Google AI Essential</p>
-            <p class="text-body">Here are the details of the card</p>
-            <a href="googlecerti.png" target="_blank" class="card-button">More info</a>
+            <p class="text-title">Google AI Essentials</p>
+            <p class="text-body">Completed a professional course by Google on Artificial Intelligence.</p>
+            <a href="googlecerti.png" target="_blank" class="card-button">View Certificate</a>
         </div>
     </div>
-</div>
 
-<!-- 3D Spline Viewer -->
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
-<spline-viewer url="https://prod.spline.design/zEXEFqIokKEI5hpO/scene.splinecode"></spline-viewer>
-
-<!-- More Cards -->
-<div class="card-container">
     <div class="card">
-        <img src="DLLE.jpg" alt="Dlle Certificate">
+        <img src="DLLE.jpg" alt="DLLE Certificate">
         <div class="card-content">
             <p class="text-title">DLLE Certificate</p>
-            <p class="text-body">Here are the details of the card</p>
-
-            <a href="DLLE.jpg" target="_blank" class="card-button">More info</a>
+            <p class="text-body">Department of Lifelong Learning and Extension certificate of participation.</p>
+            <a href="DLLE.jpg" target="_blank" class="card-button">View Certificate</a>
         </div>
     </div>
 
     <div class="card">
-        <img src="MESA.jpeg" alt="mech">
+        <img src="MESA.jpeg" alt="MESA">
         <div class="card-content">
             <p class="text-title">MESA Certificate</p>
-            <p class="text-body">Here are the details of the card</p>
-
-            <a href="MESA.jpeg" target="_blank" class="card-button">More info</a>
+            <p class="text-body">Mechanical Engineering Students Association recognition.</p>
+            <a href="MESA.jpeg" target="_blank" class="card-button">View Certificate</a>
         </div>
     </div>
 
     <div class="card">
-        <img src="POSTER%20.jpg" alt="poster">
+        <img src="POSTER%20.jpg" alt="Poster">
         <div class="card-content">
-            <p class="text-title">3rd PRIZE IN POSTER MAKING Certificate</p>
-            <p class="text-body">Here are the details of the card</p>
-
-            <a href="POSTER%20.jpg" target="_blank" class="card-button">More info</a>
+            <p class="text-title">Poster Making – 3rd Prize</p>
+            <p class="text-body">Awarded 3rd prize in creative poster making competition.</p>
+            <a href="POSTER%20.jpg" target="_blank" class="card-button">View Certificate</a>
         </div>
     </div>
 
@@ -184,23 +213,22 @@
         <img src="SIP.jpg" alt="SIP">
         <div class="card-content">
             <p class="text-title">SIP Certificate</p>
-            <p class="text-body">Here are the details of the card</p>
-
-            <a href="SIP.jpg" target="_blank" class="card-button">More info</a>
+            <p class="text-body">Student Internship Program certificate of completion.</p>
+            <a href="SIP.jpg" target="_blank" class="card-button">View Certificate</a>
         </div>
     </div>
-</div>
 
-<!--<div class="card">-->
-<!--    <img src="SIP.jpg" alt="SIP">-->
-<!--    <div class="card-content">-->
-<!--        <p class="text-title">SIP Certificate</p>-->
-<!--        <p class="text-body">Here are the details of the card</p>-->
-<!--        <button class="card-button">More info</button>-->
-<!--        <a href="" target="_blank" class="card-button">More info</a>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</div>-->
+    <!-- New Certificate -->
+    <div class="card">
+        <img src="cybersecurity.jpg" alt="Cybersecurity Certificate">
+        <div class="card-content">
+            <p class="text-title"> Certificate</p>
+            <p class="text-body">Completed </p>
+            <a href="cybersecurity.jpg" target="_blank" class="card-button">View Certificate</a>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>
