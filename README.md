@@ -1,36 +1,50 @@
-Here's a possible portfolio page:
+# Litto Biju Pappachan
 
-```markdown
-# Welcome to My Portfolio!
-
-Hi, I'm Litto biju Pappachan, a Cse Student. Welcome to my online portfolio, where you can explore my work and learn more about my skills and experience.
+[![LinkedIn](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/your-linkedin-profile/](https://www.linkedin.com/in/litto-biju-pappachan-568015336/))
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)]((https://github.com/moonnight1975))
 
 ## About Me
-
-[A brief, engaging introduction about yourself, your background, and your career goals. Keep it concise and personable.]
-
-## Skills
-
-*   [List your key skills and technologies]
-*   [Add any relevant certifications or training]
+I am a Computer Science Engineering student with strong problem-solving skills and a passion for software development and user interface designing. Skilled in programming, data structures, and database management. Interested in building efficient, user-friendly applications and contributing to innovative tech projects.
 
 ## Projects
+### Notes App (Android, Jetpack Compose) – In Progress
+- Developing a mobile notes app with local storage using SQLite.
+- Features include: add, edit, delete, and search notes with a clean UI.
+- Developing a user-friendly application.
 
-*   [Project 1]
-    *   [Brief description of the project]
-    *   [Link to the project (if applicable)]
-*   [Project 2]
-    *   [Brief description of the project]
-    *   [Link to the project (if applicable)]
-*   [Add more projects as needed]
+### Digital Contact Book App (Desktop App, Python ) 
+- Developing a desktop contact app using Python (Tkinter) with PostgreSQL database.
+- Features include: add, edit, delete, and search contact with a clean UI.
+- Implemented CRUD features with PostgreSQL and Tkinter.
 
-## Contact
+### Portfolio Website
+- Designed a responsive portfolio website using Html And Css.
+- Showcases projects, skills, and achievements.
+- Deployed on Vercel for accessibility across devices.
+[![Portfolio](https://img.shields.io/badge/%F0%9F%A4%97_Portfolio-%2334D058?style=for-the-badge&logoColor=white)](https://litto.vercel.app)
 
-Feel free to reach out!
+## Education
+B.Tech in Computer Engineering
+St. John College of Engineering and Management, Palghar
+2024 – 2028 (In Progress)
 
-*   Email: [Your Email Address]
-*   LinkedIn: [Link to your LinkedIn profile]
-*   [Add other social media or contact links]
-```
+Higher Secondary (Class 12 – Science Stream)
+Vidya Vikasini Jr. College, Vasai – 2024
+Percentage: 56%
 
-This structure provides a clear and professional layout for your portfolio. Remember to replace the bracketed placeholders with your own information and tailor the content to best showcase your work and skills.
+Secondary School (Class 10)
+St. Xavier's High School, Virar – 2022
+Percentage: 70%
+
+## Skills
+- Languages: C, C++, Python, Java, SQL, JavaScript, Swift ,Kotlin
+- Web: HTML, CSS
+- Databases: MySQL, SQLite, PostgreSQL
+- Tools: Git, GitHub, Android Studio, VS Code, JetBrains IDEs, Xcode
+- Core: Problem Solving, OOP, Data Structures & Algorithms
+
+## Achievements & Certifications
+- Certificate of Extension Work – University of Mumbai (2025)
+Completed 120 hours of extension activities including IT, Industry Orientation, Entrepreneurship, Career Guidance, Women Empowerment, and Population Education.
+- Certificate of Participation – Student Induction Programme (SIP), St. John College of Engineering and Management (2024-25).
+- Certificate of Appreciation – Poster Competition (3rd Rank), Student Induction Programme (SIP), St. John College of Engineering and Management (2024-25).
