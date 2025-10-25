@@ -2,6 +2,9 @@
 
 [![LinkedIn](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/litto-biju-pappachan-568015336/)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)]((https://github.com/moonnight1975))
+[![Blogger](https://img.shields.io/badge/Blogger-FF5722?style=for-the-badge&logo=blogger&logoColor=white)](https://lstudio1975.blogspot.com/)
+[![Twitter](https://img.shields.io/badge/twitter-%231DA1F2.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/Litto31102469)
+
 
 ## About Me
 I am a Computer Science Engineering student with strong problem-solving skills and a passion for software development and user interface designing. Skilled in programming, data structures, and database management. Interested in building efficient, user-friendly applications and contributing to innovative tech projects.
