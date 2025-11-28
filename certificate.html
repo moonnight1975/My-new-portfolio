@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Litto's Portfolio</title>
+    <title>Certificates - Litto's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --text-main: #ffffff;
+            --text-muted: #cccccc;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,223 +23,440 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            color: #fff;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            min-height: 100vh;
+            background-color: #000;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
             overflow-x: hidden;
+            min-height: 100vh;
+            animation: pageEntrance 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* ===== 3D BACKGROUND ===== */
-        #bg-3d {
+        /* Background */
+        spline-viewer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none;
         }
 
-        /* Dark overlay for readability */
-        #overlay {
+        /* Navbar */
+        .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            z-index: -1;
-        }
-
-        /* ===== CARD CONTAINER ===== */
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 60px;
-        }
-
-        /* ===== CARD STYLE ===== */
-        .card {
-            position: relative;
-            height: 420px;
-            overflow: hidden;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #444;
-            backdrop-filter: blur(4px);
-        }
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 123, 255, 0.4);
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
-            transform: rotate(30deg);
-            transition: all 0.5s ease;
-        }
-        .card:hover::before {
-            top: -20%;
-            left: -20%;
-            transform: rotate(15deg);
-        }
-
-        /* ===== CARD IMAGE ===== */
-        .card img {
-            position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 85%;
-            height: auto;
-            border-radius: 12px;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-        .card:hover img {
-            transform: translateX(-50%) translateY(-20px) scale(1.1);
-            opacity: 0.85;
+            width: 90%;
+            max-width: 1200px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: transparent;
+            transition: all 0.3s ease;
         }
 
-        /* ===== CARD CONTENT ===== */
-        .card-content {
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
             position: absolute;
             bottom: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-            transform: translateY(100%);
-            transition: transform 0.5s ease;
-            text-align: center;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
         }
-        .card:hover .card-content {
-            transform: translateY(0%);
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Certificates Section */
+        .certificates-section {
+            padding: 120px 5% 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(90deg, #fff, #a5a5a5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Enhanced Glass Card */
+        .glass-card {
+            position: relative;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Glossy shine effect */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .text-title {
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 10px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
         }
+
         .text-body {
             font-size: 14px;
-            line-height: 1.4;
-            margin-bottom: 15px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
         .card-button {
             display: inline-block;
-            padding: 10px 14px;
-            background: #007bff;
+            padding: 12px 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            border: none;
-            border-radius: 8px;
             text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s ease;
-            cursor: pointer;
-        }
-        .card-button:hover {
-            background: #0056b3;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 600px) {
-            .card {
-                height: 360px;
+        .card-button:hover {
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(51, 51, 255, 0.6);
+        }
+
+        /* Animations */
+        @keyframes pageEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
             }
-            .text-title {
-                font-size: 18px;
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
             }
-            .text-body {
-                font-size: 13px;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                width: 95%;
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 20px;
+                font-size: 14px;
+            }
+
+            .certificates-section {
+                padding-top: 140px;
+            }
+
+            .page-title {
+                font-size: 36px;
             }
         }
     </style>
 </head>
+
 <body>
 
-<!-- === 3D Background === -->
-<div id="bg-3d">
+    <!-- Background -->
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
     <spline-viewer url="https://prod.spline.design/zEXEFqIokKEI5hpO/scene.splinecode"></spline-viewer>
-</div>
-<div id="overlay"></div>
 
-<!-- === Certificates Section === -->
-<div class="card-container">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Litto.</a>
+        <ul class="nav-links">
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="project.html" class="nav-link">Projects</a></li>
+            <li><a href="certificate.html" class="nav-link" style="color: var(--primary);">Certificates</a></li>
+        </ul>
+    </nav>
 
-    <div class="card">
-        <img src="googlecerti.png" alt="Google Certificate">
-        <div class="card-content">
-            <p class="text-title">Google AI Essentials</p>
-            <p class="text-body">Completed a professional course by Google on Artificial Intelligence.</p>
-            <a href="googlecerti.png" target="_blank" class="card-button">View Certificate</a>
+    <!-- Certificates Section -->
+    <section class="certificates-section">
+        <h1 class="page-title">My Certificates</h1>
+
+        <div class="cards-container">
+            <!-- Card 1 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="googlecerti.png" alt="Google AI Essentials" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Google AI Essentials</h3>
+                    <p class="text-body">Completed a professional course by Google on Artificial Intelligence, covering
+                        foundational concepts and applications.</p>
+                    <a href="googlecerti.png" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="DLLE.jpg" alt="DLLE Certificate" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">DLLE Certificate</h3>
+                    <p class="text-body">Department of Lifelong Learning and Extension certificate of participation for
+                        community service activities.</p>
+                    <a href="DLLE.jpg" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="MESA.jpeg" alt="MESA Certificate" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">MESA Certificate</h3>
+                    <p class="text-body">Mechanical Engineering Students Association recognition for active
+                        participation and contribution.</p>
+                    <a href="MESA.jpeg" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="POSTER%20.jpg" alt="Poster Competition" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Poster Making – 3rd Prize</h3>
+                    <p class="text-body">Awarded 3rd prize in a creative poster making competition for innovative design
+                        and presentation.</p>
+                    <a href="POSTER%20.jpg" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="SIP.jpg" alt="SIP Certificate" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">SIP Certificate</h3>
+                    <p class="text-body">Student Internship Program certificate of completion, demonstrating practical
+                        industry experience.</p>
+                    <a href="SIP.jpg" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="glass-card">
+                <div class="card-image-container">
+                    <img src="anveshnam.jpeg" alt="Anveshnam Certificate" class="card-image">
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Anveshnam Certificate</h3>
+                    <p class="text-body">Completed a National level workshop on Research Writing With advanced
+                        Techniques
+                        & Inter-collegiate Paper Presentation competition.</p>
+                    <a href="anveshnam.jpeg" target="_blank" class="card-button">View Certificate</a>
+                </div>
+            </div>
+
+            <!-- Placeholder 1 -->
+            <div class="glass-card">
+                <div class="card-image-container"
+                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Future Certification</h3>
+                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                </div>
+            </div>
+
+            <!-- Placeholder 2 -->
+            <div class="glass-card">
+                <div class="card-image-container"
+                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Future Certification</h3>
+                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                </div>
+            </div>
+
+            <!-- Placeholder 3 -->
+            <div class="glass-card">
+                <div class="card-image-container"
+                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Future Certification</h3>
+                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                </div>
+            </div>
+
+            <!-- Placeholder 4 -->
+            <div class="glass-card">
+                <div class="card-image-container"
+                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="text-title">Future Certification</h3>
+                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    <div class="card">
-        <img src="DLLE.jpg" alt="DLLE Certificate">
-        <div class="card-content">
-            <p class="text-title">DLLE Certificate</p>
-            <p class="text-body">Department of Lifelong Learning and Extension certificate of participation.</p>
-            <a href="DLLE.jpg" target="_blank" class="card-button">View Certificate</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="MESA.jpeg" alt="MESA">
-        <div class="card-content">
-            <p class="text-title">MESA Certificate</p>
-            <p class="text-body">Mechanical Engineering Students Association recognition.</p>
-            <a href="MESA.jpeg" target="_blank" class="card-button">View Certificate</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="POSTER%20.jpg" alt="Poster">
-        <div class="card-content">
-            <p class="text-title">Poster Making – 3rd Prize</p>
-            <p class="text-body">Awarded 3rd prize in creative poster making competition.</p>
-            <a href="POSTER%20.jpg" target="_blank" class="card-button">View Certificate</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="SIP.jpg" alt="SIP">
-        <div class="card-content">
-            <p class="text-title">SIP Certificate</p>
-            <p class="text-body">Student Internship Program certificate of completion.</p>
-            <a href="SIP.jpg" target="_blank" class="card-button">View Certificate</a>
-        </div>
-    </div>
-
-    <!-- New Certificate -->
-    <div class="card">
-        <img src="cybersecurity.jpg" alt="Cybersecurity Certificate">
-        <div class="card-content">
-            <p class="text-title"> Certificate</p>
-            <p class="text-body">Completed </p>
-            <a href="cybersecurity.jpg" target="_blank" class="card-button">View Certificate</a>
-        </div>
-    </div>
-
-</div>
+    </section>
 
 </body>
+
 </html>
