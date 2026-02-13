@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root {
             --primary: #4facfe;
@@ -123,14 +124,24 @@
             animation: fadeInUp 0.8s ease-out;
         }
 
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        .certificates-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .cards-track {
+            display: flex;
+            gap: 40px;
+            width: max-content;
         }
 
         /* Enhanced Glass Card */
         .glass-card {
+            width: 400px;
+            /* Fixed width for slider */
+            flex-shrink: 0;
             position: relative;
             border-radius: 20px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
@@ -322,140 +333,178 @@
     <section class="certificates-section">
         <h1 class="page-title">My Certificates</h1>
 
-        <div class="cards-container">
-            <!-- Card 1 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="googlecerti.png" alt="Google AI Essentials" class="card-image">
+        <div class="certificates-wrapper">
+            <div class="cards-track">
+                <!-- Card 1 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="googlecerti.png" alt="Google AI Essentials" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Google AI Essentials</h3>
+                        <p class="text-body">Completed a professional course by Google on Artificial Intelligence,
+                            covering
+                            foundational concepts and applications.</p>
+                        <a href="googlecerti.png" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Google AI Essentials</h3>
-                    <p class="text-body">Completed a professional course by Google on Artificial Intelligence, covering
-                        foundational concepts and applications.</p>
-                    <a href="googlecerti.png" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Card 2 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="DLLE.jpg" alt="DLLE Certificate" class="card-image">
+                <!-- Card 2 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="DLLE.jpg" alt="DLLE Certificate" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">DLLE Certificate</h3>
+                        <p class="text-body">Department of Lifelong Learning and Extension certificate of participation
+                            for
+                            community service activities.</p>
+                        <a href="DLLE.jpg" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">DLLE Certificate</h3>
-                    <p class="text-body">Department of Lifelong Learning and Extension certificate of participation for
-                        community service activities.</p>
-                    <a href="DLLE.jpg" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Card 3 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="MESA.jpeg" alt="MESA Certificate" class="card-image">
+                <!-- Card 3 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="MESA.jpeg" alt="MESA Certificate" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">MESA Certificate</h3>
+                        <p class="text-body">Mechanical Engineering Students Association recognition for active
+                            participation and contribution.</p>
+                        <a href="MESA.jpeg" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">MESA Certificate</h3>
-                    <p class="text-body">Mechanical Engineering Students Association recognition for active
-                        participation and contribution.</p>
-                    <a href="MESA.jpeg" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Card 4 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="POSTER%20.jpg" alt="Poster Competition" class="card-image">
+                <!-- Card 4 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="POSTER%20.jpg" alt="Poster Competition" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Poster Making – 3rd Prize</h3>
+                        <p class="text-body">Awarded 3rd prize in a creative poster making competition for innovative
+                            design
+                            and presentation.</p>
+                        <a href="POSTER%20.jpg" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Poster Making – 3rd Prize</h3>
-                    <p class="text-body">Awarded 3rd prize in a creative poster making competition for innovative design
-                        and presentation.</p>
-                    <a href="POSTER%20.jpg" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Card 5 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="SIP.jpg" alt="SIP Certificate" class="card-image">
+                <!-- Card 5 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="SIP.jpg" alt="SIP Certificate" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">SIP Certificate</h3>
+                        <p class="text-body">Student Internship Program certificate of completion, demonstrating
+                            practical
+                            industry experience.</p>
+                        <a href="SIP.jpg" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">SIP Certificate</h3>
-                    <p class="text-body">Student Internship Program certificate of completion, demonstrating practical
-                        industry experience.</p>
-                    <a href="SIP.jpg" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Card 6 -->
-            <div class="glass-card">
-                <div class="card-image-container">
-                    <img src="anveshnam.jpeg" alt="Anveshnam Certificate" class="card-image">
+                <!-- Card 6 -->
+                <div class="glass-card">
+                    <div class="card-image-container">
+                        <img src="anveshnam.jpeg" alt="Anveshnam Certificate" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Anveshnam Certificate</h3>
+                        <p class="text-body">Completed a National level workshop on Research Writing With advanced
+                            Techniques
+                            & Inter-collegiate Paper Presentation competition.</p>
+                        <a href="anveshnam.jpeg" target="_blank" class="card-button">View Certificate</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Anveshnam Certificate</h3>
-                    <p class="text-body">Completed a National level workshop on Research Writing With advanced
-                        Techniques
-                        & Inter-collegiate Paper Presentation competition.</p>
-                    <a href="anveshnam.jpeg" target="_blank" class="card-button">View Certificate</a>
-                </div>
-            </div>
 
-            <!-- Placeholder 1 -->
-            <div class="glass-card">
-                <div class="card-image-container"
-                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
-                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                <!-- Placeholder 1 -->
+                <div class="glass-card">
+                    <div class="card-image-container"
+                        style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                        <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Future Certification</h3>
+                        <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                        <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Future Certification</h3>
-                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
-                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
-                </div>
-            </div>
 
-            <!-- Placeholder 2 -->
-            <div class="glass-card">
-                <div class="card-image-container"
-                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
-                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                <!-- Placeholder 2 -->
+                <div class="glass-card">
+                    <div class="card-image-container"
+                        style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                        <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Future Certification</h3>
+                        <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                        <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Future Certification</h3>
-                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
-                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
-                </div>
-            </div>
 
-            <!-- Placeholder 3 -->
-            <div class="glass-card">
-                <div class="card-image-container"
-                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
-                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                <!-- Placeholder 3 -->
+                <div class="glass-card">
+                    <div class="card-image-container"
+                        style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                        <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Future Certification</h3>
+                        <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                        <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Future Certification</h3>
-                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
-                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
-                </div>
-            </div>
 
-            <!-- Placeholder 4 -->
-            <div class="glass-card">
-                <div class="card-image-container"
-                    style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
-                    <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                <!-- Placeholder 4 -->
+                <div class="glass-card">
+                    <div class="card-image-container"
+                        style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                        <span style="color: var(--text-muted); font-size: 14px;">Certificate Coming Soon</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-title">Future Certification</h3>
+                        <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
+                        <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="text-title">Future Certification</h3>
-                    <p class="text-body">Currently pursuing new skills and certifications. Updates coming soon.</p>
-                    <a href="#" class="card-button" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
-                </div>
-            </div>
 
+            </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const track = document.querySelector(".cards-track");
+            const originalCards = Array.from(track.children);
+
+            // Clone cards twice to create seamless loop (total 3 sets)
+            originalCards.forEach(card => track.appendChild(card.cloneNode(true)));
+            originalCards.forEach(card => track.appendChild(card.cloneNode(true)));
+
+            // Calculate width of one set
+            // Wait for images to load to get correct widths if needed, 
+            // but fixed width in CSS (400px + 40px gap) makes it easier.
+            const cardWidth = 400;
+            const gap = 40;
+            const totalSingleSetWidth = (cardWidth + gap) * originalCards.length;
+
+            gsap.to(track, {
+                x: -totalSingleSetWidth,
+                duration: 60, // Adjust speed (seconds)
+                ease: "none",
+                repeat: -1
+            });
+
+            // Pause on hover
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener("mouseenter", () => gsap.globalTimeline.pause());
+                card.addEventListener("mouseleave", () => gsap.globalTimeline.resume());
+            });
+        });
+    </script>
 
 </body>
 

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root {
             --primary: #4facfe;
@@ -124,8 +125,12 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            animation: fadeInUp 1s ease-out;
+            /* animation: fadeInUp 1s ease-out; Removed native animation for GSAP */
             text-align: center;
+            opacity: 0;
+            /* Hidden initially */
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .headline {
@@ -386,6 +391,53 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Main Entrance Animation
+            const tl = gsap.timeline();
+
+            tl.fromTo(".hero-content",
+                { opacity: 0, scale: 0.8, rotateX: 10 },
+                { opacity: 1, scale: 1, rotateX: 0, duration: 1.2, ease: "elastic.out(1, 0.6)" }
+            )
+                .fromTo(".headline",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.8"
+                )
+                .fromTo(".about-text",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6"
+                )
+                .fromTo(".skill-category",
+                    { opacity: 0, x: -20 },
+                    { opacity: 1, x: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }, "-=0.6"
+                )
+                .fromTo(".social-icon",
+                    { opacity: 0, scale: 0, rotation: -180 },
+                    { opacity: 1, scale: 1, rotation: 0, duration: 0.6, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.4"
+                );
+
+            // 3D Tilt Effect on Mouse Move
+            const heroContent = document.querySelector(".hero-content");
+            document.addEventListener("mousemove", (e) => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+
+                // Calculate position relative to center (-1 to 1)
+                const xPos = (clientX / innerWidth - 0.5) * 2;
+                const yPos = (clientY / innerHeight - 0.5) * 2;
+
+                gsap.to(heroContent, {
+                    rotationY: xPos * 5, // Tilt X axis
+                    rotationX: -yPos * 5, // Tilt Y axis
+                    duration: 0.5,
+                    ease: "power1.out",
+                    transformPerspective: 1000
+                });
+            });
+        });
+    </script>
 
 </body>
 
