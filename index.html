@@ -24,13 +24,19 @@
       box-sizing: border-box;
     }
 
-    body {
+    /* html needs black background as fallback */
+    html {
       background-color: #000;
+    }
+
+    body {
+      background-color: transparent;
+      /* Let Spline show through */
       font-family: 'Poppins', sans-serif;
       color: var(--text-main);
       overflow-x: hidden;
       min-height: 100vh;
-      animation: pageEntrance 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+      /* removed pageEntrance animation to prevent breaking fixed positioning */
     }
 
     /* Background */
@@ -40,7 +46,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 0;
+      /* Changed from -1 to 0 to sit on top of html background */
     }
 
     /* Navbar */
@@ -537,132 +544,142 @@
     <p>&copy; 2026 Litto Biju Pappachan. All rights reserved.</p>
   </footer>
 
+
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    document.addEventListener("DOMContentLoaded", (event) => {
+      gsap.registerPlugin(ScrollTrigger);
 
-    // --- Cursor Animation ---
-    const cursor = document.querySelector(".cursor");
-    const cursorDot = document.querySelector(".cursor-dot");
+      // --- Cursor Animation ---
+      const cursor = document.querySelector(".cursor");
+      const cursorDot = document.querySelector(".cursor-dot");
 
-    // Initial position to avoid jump
-    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
-    gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
+      if (cursor && cursorDot) {
+        // Initial position to avoid jump
+        gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+        gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
 
-    let mouseX = 0;
-    let mouseY = 0;
+        let mouseX = 0;
+        let mouseY = 0;
 
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
 
-      // Immediate update for dot
-      gsap.to(cursorDot, {
-        x: mouseX,
-        y: mouseY,
-        duration: 0.1,
-        ease: "power2.out"
-      });
+          // Immediate update for dot
+          gsap.to(cursorDot, {
+            x: mouseX,
+            y: mouseY,
+            duration: 0.1,
+            ease: "power2.out"
+          });
 
-      // Smooth lag for outer circle
-      gsap.to(cursor, {
-        x: mouseX,
-        y: mouseY,
-        duration: 0.5,
-        ease: "power3.out"
-      });
-    });
-
-    // Hover effects for cursor
-    const hoverElements = document.querySelectorAll("a, .btn, .feature-card");
-    hoverElements.forEach(el => {
-      el.addEventListener("mouseenter", () => {
-        gsap.to(cursor, { scale: 2, borderColor: "#fff", duration: 0.3 });
-        gsap.to(cursorDot, { scale: 0.5, background: "transparent", duration: 0.3 });
-      });
-      el.addEventListener("mouseleave", () => {
-        gsap.to(cursor, { scale: 1, borderColor: "#4facfe", duration: 0.3 });
-        gsap.to(cursorDot, { scale: 1, background: "#ffffff", duration: 0.3 });
-      });
-    });
-
-
-    // --- Preloader Counter Animation ---
-    const counterElement = document.querySelector(".counter");
-    let count = { val: 0 };
-
-    gsap.to(count, {
-      val: 100,
-      duration: 2.5,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        counterElement.textContent = Math.floor(count.val);
-      },
-      onComplete: () => {
-        // Slide preloader up
-        gsap.to(".preloader", {
-          yPercent: -100,
-          duration: 1,
-          ease: "power4.inOut"
+          // Smooth lag for outer circle
+          gsap.to(cursor, {
+            x: mouseX,
+            y: mouseY,
+            duration: 0.5,
+            ease: "power3.out"
+          });
         });
 
-        // Reveal Hero Content
-        gsap.from(".hero-content", {
+        // Hover effects for cursor
+        const hoverElements = document.querySelectorAll("a, .btn, .feature-card");
+        hoverElements.forEach(el => {
+          el.addEventListener("mouseenter", () => {
+            gsap.to(cursor, { scale: 2, borderColor: "#fff", duration: 0.3 });
+            gsap.to(cursorDot, { scale: 0.5, background: "transparent", duration: 0.3 });
+          });
+          el.addEventListener("mouseleave", () => {
+            gsap.to(cursor, { scale: 1, borderColor: "#4facfe", duration: 0.3 });
+            gsap.to(cursorDot, { scale: 1, background: "#ffffff", duration: 0.3 });
+          });
+        });
+      }
+
+      // --- Preloader Counter Animation ---
+      const counterElement = document.querySelector(".counter");
+      if (counterElement) {
+        let count = { val: 0 };
+
+        gsap.to(count, {
+          val: 100,
+          duration: 2.5,
+          ease: "power2.inOut",
+          onUpdate: () => {
+            counterElement.textContent = Math.floor(count.val);
+          },
+          onComplete: () => {
+            // Slide preloader up
+            gsap.to(".preloader", {
+              yPercent: -100,
+              duration: 1,
+              ease: "power4.inOut"
+            });
+
+            // Reveal Hero Content
+            gsap.from(".hero-content", {
+              y: 100,
+              opacity: 0,
+              duration: 1.2,
+              delay: 0.5,
+              ease: "power3.out"
+            });
+          }
+        });
+      }
+
+      // Hero Parallax
+      const heroContent = document.querySelector(".hero-content");
+      if (heroContent) {
+        gsap.to(heroContent, {
           y: 100,
-          opacity: 0,
-          duration: 1.2,
-          delay: 0.5,
-          ease: "power3.out"
-        });
-      }
-    });
-
-    // Hero Parallax (unchanged logic)
-    gsap.to(".hero-content", {
-      y: 100,
-      // opacity: 0,
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true // key fix: use boolean true or number
-      }
-    });
-
-    // Common animation for sections
-    const sections = document.querySelectorAll("section:not(.hero)");
-
-    sections.forEach(section => {
-      const title = section.querySelector(".section-title");
-      const cards = section.querySelectorAll(".feature-card");
-
-      if (title) {
-        gsap.to(title, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
           scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
           }
         });
       }
 
-      if (cards.length > 0) {
-        gsap.to(cards, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-          }
-        });
-      }
+      // Common animation for sections
+      const sections = document.querySelectorAll("section:not(.hero)");
+      const observerParams = {
+        root: null,
+        threshold: 0.15
+      };
+
+      sections.forEach(section => {
+        const title = section.querySelector(".section-title");
+        const cards = section.querySelectorAll(".feature-card");
+
+        if (title) {
+          gsap.to(title, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+              trigger: section,
+              start: "top 70%",
+            }
+          });
+        }
+
+        if (cards.length > 0) {
+          gsap.to(cards, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 70%",
+            }
+          });
+        }
+      });
     });
   </script>
 
 </body>
-
-</html>
