@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,93 +10,97 @@ const Home = () => {
     const counterRef = useRef(null);
     const heroContentRef = useRef(null);
     const sectionsRef = useRef([]);
-    // preloader container
     const preloaderRef = useRef(null);
+    const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
 
     useEffect(() => {
-        // Basic counter animation
-        let count = { val: 0 };
-        if (counterRef.current) {
-            gsap.to(count, {
-                val: 100,
-                duration: 2.5,
-                ease: "power2.inOut",
-                onUpdate: () => {
-                    if (counterRef.current) {
-                        counterRef.current.textContent = Math.floor(count.val);
-                    }
-                },
-                onComplete: () => {
-                    if (preloaderRef.current) {
-                        gsap.to(preloaderRef.current, {
-                            yPercent: -100,
-                            duration: 1,
-                            ease: "power4.inOut"
-                        });
-                    }
-                    if (heroContentRef.current) {
-                        gsap.from(heroContentRef.current, {
-                            y: 100,
-                            opacity: 0,
-                            duration: 1.2,
-                            delay: 0.5,
-                            ease: "power3.out"
-                        });
-                    }
-                }
-            });
+        if (!canUseDesktopEffects) {
+            return undefined;
         }
 
-        // Hero parallax
-        if (heroContentRef.current) {
-            gsap.to(heroContentRef.current, {
-                y: 100,
-                scrollTrigger: {
-                    trigger: ".hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-        }
+        const context = gsap.context(() => {
+            let count = { val: 0 };
 
-        // Cards animation
-        sectionsRef.current.forEach((section) => {
-            if (!section) return;
-            const title = section.querySelector(".section-title");
-            const cards = section.querySelectorAll(".feature-card");
-
-            if (title) {
-                gsap.to(title, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 70%",
-                    }
-                });
-            }
-
-            if (cards.length > 0) {
-                gsap.to(cards, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    stagger: 0.2,
+            if (counterRef.current) {
+                gsap.to(count, {
+                    val: 100,
+                    duration: 1.1,
                     ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 70%",
+                    onUpdate: () => {
+                        if (counterRef.current) {
+                            counterRef.current.textContent = Math.floor(count.val);
+                        }
+                    },
+                    onComplete: () => {
+                        if (preloaderRef.current) {
+                            gsap.to(preloaderRef.current, {
+                                yPercent: -100,
+                                duration: 0.7,
+                                ease: "power4.inOut"
+                            });
+                        }
+                        if (heroContentRef.current) {
+                            gsap.from(heroContentRef.current, {
+                                y: 48,
+                                opacity: 0,
+                                duration: 0.9,
+                                delay: 0.15,
+                                ease: "power3.out"
+                            });
+                        }
                     }
                 });
             }
+
+            if (heroContentRef.current) {
+                gsap.to(heroContentRef.current, {
+                    y: 70,
+                    scrollTrigger: {
+                        trigger: ".hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
+
+            sectionsRef.current.forEach((section) => {
+                if (!section) return;
+
+                const title = section.querySelector(".section-title");
+                const cards = section.querySelectorAll(".feature-card");
+
+                if (title) {
+                    gsap.from(title, {
+                        opacity: 0,
+                        y: 28,
+                        duration: 0.7,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 76%",
+                        }
+                    });
+                }
+
+                if (cards.length > 0) {
+                    gsap.from(cards, {
+                        opacity: 0,
+                        y: 40,
+                        duration: 0.7,
+                        stagger: 0.12,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 76%",
+                        }
+                    });
+                }
+            });
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach((st) => st.kill());
-        };
-    }, []);
+        return () => context.revert();
+    }, [canUseDesktopEffects]);
 
     return (
         <>
@@ -113,67 +118,74 @@ const Home = () => {
             justify-content: flex-end;
             align-items: flex-end;
             padding: 50px;
+            pointer-events: none;
         }
         .counter {
-            font-size: 120px;
+            font-size: clamp(4rem, 10vw, 7.5rem);
             font-weight: 700;
             color: var(--primary);
             line-height: 1;
             font-variant-numeric: tabular-nums;
         }
         .hero {
-            height: 100vh;
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 0 5%;
+            padding: clamp(110px, 16vw, 150px) 5% 72px;
             position: relative;
             z-index: 1;
             text-align: center;
         }
         .hero-content {
-            max-width: 900px;
+            max-width: 920px;
             width: 100%;
-            padding: 40px;
-            border-radius: 20px;
+            padding: clamp(20px, 4vw, 40px);
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(8, 13, 25, 0.6), rgba(8, 13, 25, 0.18));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
         }
         .greeting {
-            font-size: 24px;
+            font-size: clamp(0.95rem, 2vw, 1.4rem);
             color: var(--primary);
             font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            margin-bottom: 14px;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
         }
         .headline {
-            font-size: 64px;
+            font-size: clamp(2.85rem, 8vw, 4.4rem);
             font-weight: 700;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             background: linear-gradient(90deg, #fff, #a5a5a5);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .subtitle {
-            font-size: 24px;
+            font-size: clamp(1rem, 2.4vw, 1.55rem);
             color: var(--text-muted);
-            margin-bottom: 40px;
+            margin-bottom: 34px;
             font-weight: 300;
         }
         .cta-buttons {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         .btn {
-            padding: 15px 35px;
+            padding: 15px 28px;
             border-radius: 30px;
             font-size: 16px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
         }
         .btn-primary {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
@@ -196,19 +208,17 @@ const Home = () => {
         }
         section:not(.hero) {
             width: 100%;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 80px 5%;
+            padding: 72px 5%;
             position: relative;
         }
         .highlights-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
             width: 100%;
             max-width: 1200px;
         }
@@ -216,14 +226,11 @@ const Home = () => {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 24px;
+            padding: 28px;
             width: 100%;
-            max-width: 350px;
             text-align: left;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(50px);
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .feature-card:hover {
             transform: translateY(-10px);
@@ -263,12 +270,21 @@ const Home = () => {
             gap: 10px;
         }
         .about-highlight {
-            max-width: 800px;
-            text-align: center;
+            max-width: 880px;
+            text-align: left;
             background: rgba(0, 0, 0, 0.6);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .about-highlight-card {
+            max-width: 880px;
+            padding: clamp(28px, 5vw, 50px);
+        }
+        .about-highlight-title {
+            margin-bottom: 18px;
+        }
+        .about-highlight-text {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.75;
         }
         footer {
             padding: 40px;
@@ -279,19 +295,51 @@ const Home = () => {
             position: relative;
             z-index: 2;
         }
+        @media (max-width: 1024px) {
+            .highlights-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
         @media (max-width: 768px) {
-            .headline { font-size: 42px; }
-            .subtitle { font-size: 18px; }
-            .cta-buttons { flex-direction: column; }
+            .hero {
+                align-items: flex-start;
+                text-align: left;
+            }
+            .hero-content {
+                padding: 22px;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            section:not(.hero) {
+                padding: 56px 5%;
+            }
+            .highlights-container {
+                grid-template-columns: 1fr;
+            }
+            .feature-card {
+                padding: 24px;
+            }
+            .about-highlight-text {
+                font-size: 16px;
+            }
+            footer {
+                padding: 28px 20px 40px;
+            }
         }
       `}</style>
 
-            {/* Preloader */}
-            <div className="preloader" ref={preloaderRef}>
-                <div className="counter" ref={counterRef}>0</div>
-            </div>
+            {canUseDesktopEffects ? (
+                <div className="preloader" ref={preloaderRef}>
+                    <div className="counter" ref={counterRef}>0</div>
+                </div>
+            ) : null}
 
-            {/* Content */}
             <section className="hero">
                 <div className="hero-content" ref={heroContentRef}>
                     <p className="greeting">Hello, I am</p>
@@ -305,7 +353,6 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Projects Highlight */}
             <section id="projects" ref={el => sectionsRef.current[0] = el}>
                 <h2 className="section-title">Featured Projects</h2>
                 <div className="highlights-container">
@@ -330,7 +377,6 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Certificates Highlight */}
             <section id="certificates" ref={el => sectionsRef.current[1] = el}>
                 <h2 className="section-title">Latest Certifications</h2>
                 <div className="highlights-container">
@@ -355,11 +401,10 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* About Highlight */}
             <section id="about" ref={el => sectionsRef.current[2] = el}>
-                <div className="about-highlight feature-card" style={{ width: "100%", maxWidth: "800px", padding: "50px" }}>
-                    <h2 className="section-title" style={{ marginBottom: "20px" }}>Who Am I?</h2>
-                    <p className="feature-desc" style={{ fontSize: "18px", color: "#ccc" }}>
+                <div className="about-highlight about-highlight-card feature-card">
+                    <h2 className="section-title about-highlight-title">Who Am I?</h2>
+                    <p className="about-highlight-text">
                         I am <b>Litto Biju Pappachan</b>, a Computer Science Engineering student passionate about crafting digital experiences.
                         Whether it's building robust backends or designing fluid frontends, I love bringing ideas to life through code.
                     </p>

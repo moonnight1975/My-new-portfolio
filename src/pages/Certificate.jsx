@@ -1,32 +1,121 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
+
+const certificates = [
+    {
+        image: '/googlecerti.png',
+        alt: 'Google AI Essentials',
+        title: 'Google AI Essentials',
+        description:
+            "Earned the Google AI Essentials certificate by mastering core AI concepts, prompt engineering, and responsible AI practices through Google's professional training program.",
+    },
+    {
+        image: '/DLLE.jpg',
+        alt: 'DLLE Certificate',
+        title: 'DLLE Certificate',
+        description:
+            'Recognized by the Department of Lifelong Learning & Extension for active participation in outreach and community engagement programs organized by the college.',
+    },
+    {
+        image: '/MESA.jpeg',
+        alt: 'MESA Certificate',
+        title: 'MESA Certificate',
+        description:
+            'Awarded by the Mechanical Engineering Students Association for active involvement and contributions to technical events, workshops, and departmental activities.',
+    },
+    {
+        image: '/POSTER.jpg',
+        alt: 'Poster Competition',
+        title: 'Poster Making – 3rd Prize',
+        description:
+            'Secured 3rd place in an inter-collegiate poster making competition, showcasing creativity, design thinking, and the ability to communicate ideas visually.',
+    },
+    {
+        image: '/SIP.jpg',
+        alt: 'SIP Certificate',
+        title: 'SIP Certificate',
+        description:
+            'Successfully completed the Student Internship Program (SIP), gaining hands-on industry experience and applying academic knowledge to real-world projects.',
+    },
+    {
+        image: '/anveshnam.jpeg',
+        alt: 'Anveshnam Certificate',
+        title: 'Anveshnam Certificate',
+        description:
+            'Participated in Anveshnam — a national-level event featuring an advanced research writing workshop and an inter-collegiate technical paper presentation competition.',
+    },
+    {
+        image: '/bis.jpg',
+        alt: 'BIS Certificate',
+        title: 'BIS Certificate',
+        description:
+            'Certified by the Bureau of Indian Standards (BIS) for participation in quality and standards awareness programs, promoting standardization practices in engineering.',
+    },
+    {
+        image: '/cgc.jpg',
+        alt: 'Coding Genuis C Certificate',
+        title: 'Coding Genuis C Certificate',
+        description:
+            "Awarded by Coding Genuis C for outstanding dedication and performance, recognizing consistent effort and achievement throughout the program's activities and assessments.",
+    },
+    {
+        image: '/cgjava.jpg',
+        alt: 'Coding Genuis Java Certificate',
+        title: 'Coding Genuis Java Certificate',
+        description:
+            'Completed a structured Java programming course covering object-oriented principles, data structures, and application development, demonstrated through hands-on projects.',
+    },
+    {
+        image: '/ioft.jpg',
+        alt: 'IOFT Certificate',
+        title: 'IOFT Certificate',
+        description:
+            'Recognized for participation and achievement in the IOFT program, reflecting a commitment to excellence and continuous growth in the domain.',
+    },
+    {
+        image: '/mso_fixed.jpg',
+        alt: 'MSO Certificate',
+        title: 'MSO Certificate',
+        description:
+            'Validated proficiency in the Microsoft Office Suite including Word, Excel, and PowerPoint, completing a comprehensive training program focused on productivity and professional documentation.',
+    },
+    {
+        image: '/Certificatemeta_fixed.jpg',
+        alt: 'Meta Certificate',
+        title: 'Meta Certificate',
+        description:
+            "Earned a professional certificate from Meta, gaining industry-recognized skills and practical knowledge in the domain covered by Meta's learning program.",
+    },
+    {
+        image: '/sql_fixed.jpg',
+        alt: 'SQL Certificate',
+        title: 'SQL Certificate',
+        description:
+            'Demonstrated expertise in SQL by completing a structured database course covering queries, joins, aggregations, and data management using relational databases.',
+    },
+];
 
 const Certificate = () => {
     const trackRef = useRef(null);
+    const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
+    const visibleCertificates = canUseDesktopEffects
+        ? [...certificates, ...certificates]
+        : certificates;
 
     useEffect(() => {
         const track = trackRef.current;
-        if (!track) return;
-
-        // Clone children to create a seamless loop
-        const originalCards = Array.from(track.children);
-
-        // Append two sets of clones to ensure the track never runs out visually
-        originalCards.forEach(card => track.appendChild(card.cloneNode(true)));
-        originalCards.forEach(card => track.appendChild(card.cloneNode(true)));
-
-        const cardWidth = 400;
-        const gap = 40;
-        const totalSingleSetWidth = (cardWidth + gap) * originalCards.length;
+        if (!track || !canUseDesktopEffects) return undefined;
 
         const anim = gsap.to(track, {
-            x: -totalSingleSetWidth,
-            duration: 120, // Adjust speed (seconds)
+            x: () => -(track.scrollWidth / 2),
+            duration: 80,
             ease: "none",
-            repeat: -1
+            repeat: -1,
+            repeatRefresh: true
         });
 
-        const cards = document.querySelectorAll('.glass-card');
+        const cards = track.querySelectorAll('.glass-card');
         const pauseAnim = () => anim.pause();
         const playAnim = () => anim.resume();
 
@@ -41,14 +130,15 @@ const Certificate = () => {
                 card.removeEventListener("mouseleave", playAnim);
             });
             anim.kill();
+            gsap.set(track, { clearProps: 'transform' });
         };
-    }, []);
+    }, [canUseDesktopEffects]);
 
     return (
         <>
             <style>{`
                 .certificates-section {
-                    padding: 120px 5% 50px;
+                    padding: 132px 5% 56px;
                     max-width: 1200px;
                     margin: 0 auto;
                     position: relative;
@@ -62,14 +152,19 @@ const Certificate = () => {
                 }
                 .cards-track {
                     display: flex;
-                    gap: 40px;
+                    gap: 28px;
                     width: max-content;
                 }
+                .cards-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                    gap: 22px;
+                }
                 .glass-card {
-                    width: 400px;
+                    width: min(360px, 82vw);
                     flex-shrink: 0;
                     position: relative;
-                    border-radius: 20px;
+                    border-radius: 22px;
                     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
@@ -79,10 +174,9 @@ const Certificate = () => {
                     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
                     overflow: hidden;
-                    transition: all 0.4s ease;
+                    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, border-color 0.4s ease;
                     display: flex;
                     flex-direction: column;
-                    animation: fadeInUp 1s ease-out;
                 }
                 .glass-card:hover {
                     transform: translateY(-10px) scale(1.02);
@@ -106,7 +200,7 @@ const Certificate = () => {
                 }
                 .card-image-container {
                     width: 100%;
-                    height: 220px;
+                    aspect-ratio: 16 / 10;
                     overflow: hidden;
                     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 }
@@ -120,7 +214,7 @@ const Certificate = () => {
                     transform: scale(1.1);
                 }
                 .card-content {
-                    padding: 25px;
+                    padding: 24px;
                     flex-grow: 1;
                     display: flex;
                     flex-direction: column;
@@ -164,7 +258,17 @@ const Certificate = () => {
                 }
                 @media (max-width: 768px) {
                     .certificates-section {
-                        padding-top: 140px;
+                        padding-top: 112px;
+                    }
+                    .certificates-wrapper {
+                        overflow: visible;
+                        padding-top: 0;
+                    }
+                    .glass-card {
+                        width: 100%;
+                    }
+                    .card-content {
+                        padding: 22px;
                     }
                 }
             `}</style>
@@ -173,166 +277,44 @@ const Certificate = () => {
                 <h1 className="page-title">My Certificates</h1>
 
                 <div className="certificates-wrapper">
-                    <div className="cards-track" ref={trackRef}>
-                        {/* Card 1 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/googlecerti.png" alt="Google AI Essentials" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Google AI Essentials</h3>
-                                <p className="text-body">Earned the Google AI Essentials certificate by mastering core AI concepts, prompt engineering, and responsible AI practices through Google's professional training program.</p>
-                                <a href="/googlecerti.png" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
+                    <div
+                        className={canUseDesktopEffects ? 'cards-track' : 'cards-grid'}
+                        ref={trackRef}
+                    >
+                        {visibleCertificates.map((certificate, index) => {
+                            const isClone = canUseDesktopEffects && index >= certificates.length;
 
-                        {/* Card 2 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/DLLE.jpg" alt="DLLE Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">DLLE Certificate</h3>
-                                <p className="text-body">Recognized by the Department of Lifelong Learning & Extension for active participation in outreach and community engagement programs organized by the college.</p>
-                                <a href="/DLLE.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/MESA.jpeg" alt="MESA Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">MESA Certificate</h3>
-                                <p className="text-body">Awarded by the Mechanical Engineering Students Association for active involvement and contributions to technical events, workshops, and departmental activities.</p>
-                                <a href="/MESA.jpeg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 4 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/POSTER.jpg" alt="Poster Competition" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Poster Making – 3rd Prize</h3>
-                                <p className="text-body">Secured 3rd place in an inter-collegiate poster making competition, showcasing creativity, design thinking, and the ability to communicate ideas visually.</p>
-                                <a href="/POSTER.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 5 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/SIP.jpg" alt="SIP Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">SIP Certificate</h3>
-                                <p className="text-body">Successfully completed the Student Internship Program (SIP), gaining hands-on industry experience and applying academic knowledge to real-world projects.</p>
-                                <a href="/SIP.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 6 */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/anveshnam.jpeg" alt="Anveshnam Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Anveshnam Certificate</h3>
-                                <p className="text-body">Participated in Anveshnam — a national-level event featuring an advanced research writing workshop and an inter-collegiate technical paper presentation competition.</p>
-                                <a href="/anveshnam.jpeg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 7 - BIS */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/bis.jpg" alt="BIS Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">BIS Certificate</h3>
-                                <p className="text-body">Certified by the Bureau of Indian Standards (BIS) for participation in quality and standards awareness programs, promoting standardization practices in engineering.</p>
-                                <a href="/bis.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 8 - CGC */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/cgc.jpg" alt="Coding Genuis C Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Coding Genuis C Certificate</h3>
-                                <p className="text-body">Awarded by Coding Genuis C for outstanding dedication and performance, recognizing consistent effort and achievement throughout the program's activities and assessments.</p>
-                                <a href="/cgc.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 9 - CG Java */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/cgjava.jpg" alt="Coding Genuis Java Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Coding Genuis Java Certificate</h3>
-                                <p className="text-body">Completed a structured Java programming course covering object-oriented principles, data structures, and application development, demonstrated through hands-on projects.</p>
-                                <a href="/cgjava.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 11 - IOFT */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/ioft.jpg" alt="IOFT Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">IOFT Certificate</h3>
-                                <p className="text-body">Recognized for participation and achievement in the IOFT program, reflecting a commitment to excellence and continuous growth in the domain.</p>
-                                <a href="/ioft.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 12 - MSO */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/mso_fixed.jpg" alt="MSO Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">MSO Certificate</h3>
-                                <p className="text-body">Validated proficiency in the Microsoft Office Suite including Word, Excel, and PowerPoint, completing a comprehensive training program focused on productivity and professional documentation.</p>
-                                <a href="/mso_fixed.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 13 - Certificatemeta */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/Certificatemeta_fixed.jpg" alt="Meta Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">Meta Certificate</h3>
-                                <p className="text-body">Earned a professional certificate from Meta, gaining industry-recognized skills and practical knowledge in the domain covered by Meta's learning program.</p>
-                                <a href="/Certificatemeta_fixed.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-                        {/* Card 14 - SQL */}
-                        <div className="glass-card">
-                            <div className="card-image-container">
-                                <img src="/sql_fixed.jpg" alt="SQL Certificate" className="card-image" />
-                            </div>
-                            <div className="card-content">
-                                <h3 className="text-title">SQL Certificate</h3>
-                                <p className="text-body">Demonstrated expertise in SQL by completing a structured database course covering queries, joins, aggregations, and data management using relational databases.</p>
-                                <a href="/sql_fixed.jpg" target="_blank" rel="noreferrer" className="card-button">View Certificate</a>
-                            </div>
-                        </div>
-
-
-
-
+                            return (
+                                <article
+                                    key={`${certificate.title}-${index}`}
+                                    className="glass-card"
+                                    aria-hidden={isClone ? true : undefined}
+                                >
+                                    <div className="card-image-container">
+                                        <img
+                                            src={certificate.image}
+                                            alt={certificate.alt}
+                                            className="card-image"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                    </div>
+                                    <div className="card-content">
+                                        <h3 className="text-title">{certificate.title}</h3>
+                                        <p className="text-body">{certificate.description}</p>
+                                        <a
+                                            href={certificate.image}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="card-button"
+                                            tabIndex={isClone ? -1 : undefined}
+                                        >
+                                            View Certificate
+                                        </a>
+                                    </div>
+                                </article>
+                            );
+                        })}
                     </div>
                 </div>
             </section>

@@ -14,28 +14,28 @@ const Cursor = () => {
         gsap.set(cursor, { xPercent: -50, yPercent: -50 });
         gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
 
-        let mouseX = 0;
-        let mouseY = 0;
+        const moveCursorX = gsap.quickTo(cursor, 'x', {
+            duration: 0.35,
+            ease: 'power3.out',
+        });
+        const moveCursorY = gsap.quickTo(cursor, 'y', {
+            duration: 0.35,
+            ease: 'power3.out',
+        });
+        const moveDotX = gsap.quickTo(cursorDot, 'x', {
+            duration: 0.12,
+            ease: 'power2.out',
+        });
+        const moveDotY = gsap.quickTo(cursorDot, 'y', {
+            duration: 0.12,
+            ease: 'power2.out',
+        });
 
         const onMouseMove = (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            // Immediate update for dot
-            gsap.to(cursorDot, {
-                x: mouseX,
-                y: mouseY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
-
-            // Smooth lag for outer circle
-            gsap.to(cursor, {
-                x: mouseX,
-                y: mouseY,
-                duration: 0.5,
-                ease: "power3.out"
-            });
+            moveDotX(e.clientX);
+            moveDotY(e.clientY);
+            moveCursorX(e.clientX);
+            moveCursorY(e.clientY);
         };
 
         window.addEventListener("mousemove", onMouseMove);
@@ -44,21 +44,19 @@ const Cursor = () => {
         const onMouseEnter = (e) => {
             const target = e.target.closest("a, button, .btn, .feature-card, .glass-card, .card");
             if (target) {
-                gsap.to(cursor, { scale: 2, borderColor: "#fff", duration: 0.3 });
-                gsap.to(cursorDot, { scale: 0.5, background: "transparent", duration: 0.3 });
+                gsap.to(cursor, { scale: 2, borderColor: "#fff", duration: 0.25, overwrite: true });
+                gsap.to(cursorDot, { scale: 0.5, background: "transparent", duration: 0.25, overwrite: true });
             }
         };
 
         const onMouseLeave = (e) => {
             const target = e.target.closest("a, button, .btn, .feature-card, .glass-card, .card");
-            // Only scale down if we actually left a hoverable element
             if (target) {
-                gsap.to(cursor, { scale: 1, borderColor: "#4facfe", duration: 0.3 });
-                gsap.to(cursorDot, { scale: 1, background: "#ffffff", duration: 0.3 });
+                gsap.to(cursor, { scale: 1, borderColor: "#4facfe", duration: 0.25, overwrite: true });
+                gsap.to(cursorDot, { scale: 1, background: "#ffffff", duration: 0.25, overwrite: true });
             }
         };
 
-        // Use capturing phase so we don't miss hovering dynamically loaded components
         document.addEventListener("mouseover", onMouseEnter, true);
         document.addEventListener("mouseout", onMouseLeave, true);
 
@@ -83,7 +81,7 @@ const Cursor = () => {
           z-index: 10000;
           transform: translate(-50%, -50%);
           mix-blend-mode: difference;
-          display: none;
+          display: block;
         }
         .cursor-dot {
           width: 6px;
@@ -94,19 +92,13 @@ const Cursor = () => {
           pointer-events: none;
           z-index: 10001;
           transform: translate(-50%, -50%);
-          display: none;
+          display: block;
         }
-
-        @media (min-width: 992px) {
-          .cursor, .cursor-dot {
-            display: block;
-          }
-          body {
-            cursor: none;
-          }
-          .btn, a, button, .feature-card, .glass-card, .card {
-            cursor: none;
-          }
+        body {
+          cursor: none;
+        }
+        .btn, a, button, .feature-card, .glass-card, .card {
+          cursor: none;
         }
       `}</style>
             <div className="cursor" ref={cursorRef}></div>

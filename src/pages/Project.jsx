@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -106,37 +107,40 @@ const projects = [
 
 const Project = () => {
     const cardsRef = useRef([]);
+    const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
 
     useEffect(() => {
-        cardsRef.current.forEach((card, i) => {
-            if (!card) return;
-            gsap.fromTo(card,
-                { opacity: 0, y: 60 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
+        if (!canUseDesktopEffects) {
+            return undefined;
+        }
+
+        const context = gsap.context(() => {
+            cardsRef.current.forEach((card, i) => {
+                if (!card) return;
+
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 52,
+                    duration: 0.7,
                     ease: 'power3.out',
-                    delay: (i % 2) * 0.15,
+                    delay: (i % 2) * 0.12,
                     scrollTrigger: {
                         trigger: card,
                         start: 'top 88%',
                         toggleActions: 'play none none none',
                     }
-                }
-            );
+                });
+            });
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(st => st.kill());
-        };
-    }, []);
+        return () => context.revert();
+    }, [canUseDesktopEffects]);
 
     return (
         <>
             <style>{`
                 .projects-section {
-                    padding: 120px 5% 80px;
+                    padding: 132px 5% 80px;
                     max-width: 1200px;
                     margin: 0 auto;
                     position: relative;
@@ -144,7 +148,7 @@ const Project = () => {
                 }
                 .projects-grid {
                     display: grid;
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                     gap: 28px;
                 }
                 .project-card {
@@ -162,7 +166,6 @@ const Project = () => {
                     gap: 18px;
                     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
                     transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-                    opacity: 0;
                     position: relative;
                     overflow: hidden;
                 }
@@ -236,6 +239,7 @@ const Project = () => {
                     display: flex;
                     gap: 12px;
                     margin-top: 4px;
+                    flex-wrap: wrap;
                 }
                 .proj-btn {
                     display: inline-flex;
@@ -276,10 +280,17 @@ const Project = () => {
                 }
                 @media (max-width: 768px) {
                     .projects-section {
-                        padding-top: 140px;
+                        padding-top: 112px;
                     }
-                    .projects-grid {
-                        grid-template-columns: 1fr;
+                    .project-card {
+                        padding: 24px;
+                    }
+                    .project-links {
+                        flex-direction: column;
+                    }
+                    .proj-btn {
+                        width: 100%;
+                        justify-content: center;
                     }
                 }
             `}</style>

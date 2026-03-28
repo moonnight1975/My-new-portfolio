@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Cursor from './components/Cursor';
 import Home from './pages/Home';
-import About from './pages/About';
-import Project from './pages/Project';
-import Certificate from './pages/Certificate';
+import useMediaQuery, { ENHANCED_UI_QUERY } from './hooks/useMediaQuery';
 import './index.css';
 
+const About = lazy(() => import('./pages/About'));
+const Project = lazy(() => import('./pages/Project'));
+const Certificate = lazy(() => import('./pages/Certificate'));
+const Cursor = lazy(() => import('./components/Cursor'));
+const BackgroundScene = lazy(() => import('./components/BackgroundScene'));
+
 const App = () => {
+    const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
+
     return (
         <Router>
-            <Cursor />
+            {canUseDesktopEffects ? (
+                <Suspense fallback={null}>
+                    <BackgroundScene />
+                    <Cursor />
+                </Suspense>
+            ) : null}
             <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/projects" element={<Project />} />
-                <Route path="/certificates" element={<Certificate />} />
-            </Routes>
+            <Suspense fallback={<div className="route-fallback" aria-hidden="true" />}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/projects" element={<Project />} />
+                    <Route path="/certificates" element={<Certificate />} />
+                </Routes>
+            </Suspense>
         </Router>
     );
 };

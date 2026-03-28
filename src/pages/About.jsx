@@ -1,101 +1,129 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
 
 const About = () => {
     const heroContentRef = useRef(null);
+    const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
 
     useEffect(() => {
-        const tl = gsap.timeline();
+        if (!canUseDesktopEffects) {
+            return undefined;
+        }
 
-        tl.fromTo(".hero-content-about",
-            { opacity: 0, scale: 0.8, rotateX: 10 },
-            { opacity: 1, scale: 1, rotateX: 0, duration: 1.2, ease: "elastic.out(1, 0.6)" }
-        )
-            .fromTo(".headline-about",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.8"
-            )
-            .fromTo(".about-text",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6"
-            )
-            .fromTo(".skill-category",
-                { opacity: 0, x: -20 },
-                { opacity: 1, x: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }, "-=0.6"
-            )
-            .fromTo(".social-icon",
-                { opacity: 0, scale: 0, rotation: -180 },
-                { opacity: 1, scale: 1, rotation: 0, duration: 0.6, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.4"
-            );
+        let removeMouseListener = () => {};
 
-        const onMouseMove = (e) => {
-            if (!heroContentRef.current) return;
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
+        const context = gsap.context(() => {
+            const timeline = gsap.timeline();
 
-            const xPos = (clientX / innerWidth - 0.5) * 2;
-            const yPos = (clientY / innerHeight - 0.5) * 2;
+            timeline
+                .from(".hero-content-about", {
+                    opacity: 0,
+                    scale: 0.94,
+                    y: 20,
+                    duration: 0.8,
+                    ease: "power3.out"
+                })
+                .from(".headline-about", {
+                    opacity: 0,
+                    y: 18,
+                    duration: 0.55,
+                    ease: "power2.out"
+                }, "-=0.45")
+                .from(".about-text", {
+                    opacity: 0,
+                    y: 18,
+                    duration: 0.5,
+                    ease: "power2.out"
+                }, "-=0.35")
+                .from(".skill-category", {
+                    opacity: 0,
+                    x: -18,
+                    duration: 0.45,
+                    stagger: 0.08,
+                    ease: "power2.out"
+                }, "-=0.25")
+                .from(".social-icon", {
+                    opacity: 0,
+                    scale: 0.8,
+                    duration: 0.35,
+                    stagger: 0.06,
+                    ease: "back.out(1.5)"
+                }, "-=0.15");
 
-            gsap.to(heroContentRef.current, {
-                rotationY: xPos * 5,
-                rotationX: -yPos * 5,
-                duration: 0.5,
-                ease: "power1.out",
-                transformPerspective: 1000
+            const rotateX = gsap.quickTo(heroContentRef.current, "rotationX", {
+                duration: 0.3,
+                ease: "power1.out"
             });
-        };
+            const rotateY = gsap.quickTo(heroContentRef.current, "rotationY", {
+                duration: 0.3,
+                ease: "power1.out"
+            });
 
-        window.addEventListener("mousemove", onMouseMove);
+            const onMouseMove = (event) => {
+                if (!heroContentRef.current) return;
+
+                const xPos = (event.clientX / window.innerWidth - 0.5) * 2;
+                const yPos = (event.clientY / window.innerHeight - 0.5) * 2;
+
+                rotateY(xPos * 4);
+                rotateX(-yPos * 4);
+            };
+
+            window.addEventListener("mousemove", onMouseMove);
+            removeMouseListener = () => {
+                window.removeEventListener("mousemove", onMouseMove);
+            };
+        }, heroContentRef);
 
         return () => {
-            window.removeEventListener("mousemove", onMouseMove);
-            tl.kill();
+            removeMouseListener();
+            context.revert();
         };
-    }, []);
+    }, [canUseDesktopEffects]);
 
     return (
         <>
             <style>{`
                 .hero-about {
-                    min-height: 100vh;
+                    min-height: 100svh;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    padding: 120px 5% 50px;
+                    padding: 132px 5% 64px;
                     position: relative;
                     z-index: 1;
                 }
                 .hero-content-about {
-                    max-width: 800px;
+                    max-width: 860px;
                     width: 100%;
-                    padding: 50px;
-                    background: rgba(255, 255, 255, 0.03);
+                    padding: clamp(28px, 5vw, 50px);
+                    background: rgba(255, 255, 255, 0.04);
                     backdrop-filter: blur(16px);
                     -webkit-backdrop-filter: blur(16px);
                     border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 24px;
+                    border-radius: 28px;
                     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
                     text-align: center;
-                    opacity: 0;
                     transform-style: preserve-3d;
                     perspective: 1000px;
                 }
                 .headline-about {
-                    font-size: 48px;
+                    font-size: clamp(2.4rem, 5vw, 3.2rem);
                     font-weight: 700;
                     line-height: 1.1;
-                    margin-bottom: 30px;
+                    margin-bottom: 24px;
                     background: linear-gradient(90deg, #fff, #a5a5a5);
                     -webkit-background-clip: text;
                     background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
                 .about-text {
-                    font-size: 18px;
+                    font-size: clamp(1rem, 2vw, 1.1rem);
                     color: var(--text-muted);
                     line-height: 1.8;
-                    margin-bottom: 40px;
+                    margin-bottom: 36px;
                 }
                 .about-text b {
                     color: var(--primary);
@@ -105,6 +133,7 @@ const About = () => {
                     display: flex;
                     gap: 20px;
                     justify-content: center;
+                    flex-wrap: wrap;
                 }
                 .social-icon {
                     color: var(--text-muted);
@@ -128,7 +157,7 @@ const About = () => {
                     box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
                 }
                 .skills-container {
-                    margin-bottom: 40px;
+                    margin-bottom: 36px;
                     text-align: left;
                 }
                 .skill-category {
@@ -163,14 +192,15 @@ const About = () => {
                     box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
                 }
                 @media (max-width: 768px) {
+                    .hero-about {
+                        padding: 112px 5% 48px;
+                    }
                     .hero-content-about {
-                        padding: 30px 20px;
+                        padding: 28px 20px;
+                        text-align: left;
                     }
-                    .headline-about {
-                        font-size: 36px;
-                    }
-                    .about-text {
-                        font-size: 16px;
+                    .social-links {
+                        justify-content: flex-start;
                     }
                 }
             `}</style>
