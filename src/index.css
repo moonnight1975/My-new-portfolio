@@ -1,15 +1,33 @@
 @import "tailwindcss";
 
+/* ─── Font variables ─────────────────────────────────────────── */
 :root {
-  --primary: #4facfe;
-  --secondary: #00f2fe;
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Color tokens (HSL) */
+  --background: 201 100% 13%;
+  --foreground: 0 0% 100%;
+  --muted-foreground: 240 4% 66%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 4%;
+  --secondary: 0 0% 10%;
+  --muted: 0 0% 10%;
+  --accent: 0 0% 10%;
+  --border: 0 0% 18%;
+  --input: 0 0% 18%;
+
+  /* Legacy tokens kept for other pages */
+  --primary-color: #4facfe;
+  --secondary-color: #00f2fe;
   --text-main: #ffffff;
-  --text-muted: #b6bfd4;
+  --text-muted: hsl(240 4% 66%);
   --surface: rgba(10, 16, 30, 0.68);
   --surface-strong: rgba(12, 20, 38, 0.9);
   --border-subtle: rgba(255, 255, 255, 0.12);
 }
 
+/* ─── Reset ──────────────────────────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -17,52 +35,18 @@
 }
 
 html {
-  background: #030712;
   color-scheme: dark;
 }
 
 body {
-  background:
-    radial-gradient(circle at top, rgba(79, 172, 254, 0.2), transparent 38%),
-    radial-gradient(circle at bottom right, rgba(0, 242, 254, 0.12), transparent 28%),
-    #030712;
-  font-family: 'Poppins', sans-serif;
-  color: var(--text-main);
+  font-family: var(--font-body);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
   min-height: 100vh;
   min-height: 100svh;
   overflow-x: clip;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 45%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: auto, 72px 72px, 72px 72px;
-  mask-image: radial-gradient(circle at center, black 32%, transparent 90%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-#root {
-  position: relative;
-  z-index: 1;
-  isolation: isolate;
-}
-
-.background-scene {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.9;
-  pointer-events: none;
 }
 
 img {
@@ -75,26 +59,69 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+#root {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
 .route-fallback {
   min-height: 100svh;
 }
 
-/* Animations */
-@keyframes pageEntrance {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.background-scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.9;
+  pointer-events: none;
 }
 
-@keyframes fadeInUp {
+/* ─── Liquid-glass effect ────────────────────────────────────── */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Animations ─────────────────────────────────────────────── */
+@keyframes fade-rise {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -102,19 +129,46 @@ button {
   }
 }
 
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+.animate-fade-rise {
+  animation: fade-rise 0.8s ease-out both;
+}
+
+.animate-fade-rise-delay {
+  animation: fade-rise 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-rise-delay-2 {
+  animation: fade-rise 0.8s ease-out 0.4s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
-/* Common Section Styling */
+/* ─── Legacy animations (used by other pages) ────────────────── */
+@keyframes pageEntrance {
+  0%  { opacity: 0; transform: scale(0.95); }
+  100%{ opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─── Legacy section helpers ─────────────────────────────────── */
 .section-title {
   font-size: 36px;
   font-weight: 700;
@@ -137,7 +191,6 @@ button {
   animation: fadeInUp 0.8s ease-out;
 }
 
-/* Responsive globals */
 @media (max-width: 768px) {
   .page-title {
     margin-bottom: 36px;
@@ -145,8 +198,5 @@ button {
   .section-title {
     font-size: clamp(2rem, 7vw, 2.4rem);
     margin-bottom: 28px;
-  }
-  body::before {
-    background-size: auto, 46px 46px, 46px 46px;
   }
 }

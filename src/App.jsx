@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import useMediaQuery, { ENHANCED_UI_QUERY } from './hooks/useMediaQuery';
 import './index.css';
@@ -22,7 +21,6 @@ const App = () => {
                     <Cursor />
                 </Suspense>
             ) : null}
-            <Navbar />
             <Suspense fallback={<div className="route-fallback" aria-hidden="true" />}>
                 <Routes>
                     <Route path="/" element={<Home />} />
