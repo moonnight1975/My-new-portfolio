@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Home from './pages/Home';
 import useMediaQuery, { ENHANCED_UI_QUERY } from './hooks/useMediaQuery';
 import './index.css';
@@ -29,6 +30,7 @@ const App = () => {
                     <Route path="/certificates" element={<Certificate />} />
                 </Routes>
             </Suspense>
+            <Analytics />
         </Router>
     );
 };
