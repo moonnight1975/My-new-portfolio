@@ -7,6 +7,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
+        emoji: '🧠',
+        title: 'Soft Computing Interactive Lab',
+        description: 'A complete learning environment for Artificial Neural Networks. Explore the foundational McCulloch-Pitts neuron with mathematical proofs, or watch a Perceptron automatically learn logic gates step by step.',
+        tags: [
+            { label: 'React', color: '#61DAFB', bg: '#1a3a5c' },
+            { label: 'Vercel', color: '#ffffff', bg: '#2a2a2a' },
+        ],
+        tagCategories: ['Frontend', 'Deploy'],
+        github: 'https://github.com/moonnight1975',
+        live: 'https://interactive-perceptron-learning.vercel.app',
+    },
+    {
         emoji: '🏦',
         title: 'Fraud Disk Scheduling (FDS)',
         description: 'A disk scheduling simulation system that compares FCFS and Optimized algorithms to detect fraud bursts in financial transaction logs. Includes logical disk block simulation, seek distance analysis, and performance visualization dashboard.',

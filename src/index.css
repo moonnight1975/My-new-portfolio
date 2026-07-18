@@ -8,20 +8,20 @@
   /* Color tokens (HSL) */
   --background: 201 100% 13%;
   --foreground: 0 0% 100%;
-  --muted-foreground: 240 4% 66%;
-  --primary: 0 0% 100%;
-  --primary-foreground: 0 0% 4%;
+  --muted-foreground: 215 16% 75%;
+  --primary: 203 100% 65%;
+  --primary-foreground: 0 0% 100%;
   --secondary: 0 0% 10%;
-  --muted: 0 0% 10%;
-  --accent: 0 0% 10%;
-  --border: 0 0% 18%;
-  --input: 0 0% 18%;
+  --muted: 215 20% 15%;
+  --accent: 203 100% 65%;
+  --border: 215 20% 25%;
+  --input: 215 20% 25%;
 
   /* Legacy tokens kept for other pages */
   --primary-color: #4facfe;
   --secondary-color: #00f2fe;
   --text-main: #ffffff;
-  --text-muted: hsl(240 4% 66%);
+  --text-muted: hsl(215 16% 75%);
   --surface: rgba(10, 16, 30, 0.68);
   --surface-strong: rgba(12, 20, 38, 0.9);
   --border-subtle: rgba(255, 255, 255, 0.12);
@@ -36,6 +36,7 @@
 
 html {
   color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {

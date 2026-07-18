@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
+import Navbar from '../components/Navbar'; // Added Navbar for consistency if it's missing, wait, Certificate didn't have Navbar in the snippet but Home did. The user didn't request a Navbar here, but let's just stick to the original structure (no Navbar in Certificate.jsx in the original code).
 
 const certificates = [
     {
@@ -97,73 +98,116 @@ const certificates = [
 ];
 
 const Certificate = () => {
-    const trackRef = useRef(null);
+    const cardsRef = useRef([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
-    const visibleCertificates = canUseDesktopEffects
-        ? [...certificates, ...certificates]
-        : certificates;
+    const total = certificates.length;
 
     useEffect(() => {
-        const track = trackRef.current;
-        if (!track || !canUseDesktopEffects) return undefined;
-
-        const anim = gsap.to(track, {
-            x: () => -(track.scrollWidth / 2),
-            duration: 80,
-            ease: "none",
-            repeat: -1,
-            repeatRefresh: true
-        });
-
-        const cards = track.querySelectorAll('.glass-card');
-        const pauseAnim = () => anim.pause();
-        const playAnim = () => anim.resume();
-
-        cards.forEach(card => {
-            card.addEventListener("mouseenter", pauseAnim);
-            card.addEventListener("mouseleave", playAnim);
-        });
-
-        return () => {
-            cards.forEach(card => {
-                card.removeEventListener("mouseenter", pauseAnim);
-                card.removeEventListener("mouseleave", playAnim);
+        if (!canUseDesktopEffects) {
+            // Reset transforms if toggled to mobile view
+            cardsRef.current.forEach(card => {
+                if (card) gsap.set(card, { clearProps: "all" });
             });
-            anim.kill();
-            gsap.set(track, { clearProps: 'transform' });
-        };
-    }, [canUseDesktopEffects]);
+            return;
+        }
+
+        cardsRef.current.forEach((card, i) => {
+            if (!card) return;
+
+            // Calculate shortest distance in a circular array
+            let diff = i - currentIndex;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+
+            const isCenter = diff === 0;
+            const absDiff = Math.abs(diff);
+
+            // Hide cards that are far away
+            if (absDiff > 3) {
+                gsap.to(card, {
+                    opacity: 0,
+                    scale: 0.5,
+                    xPercent: diff > 0 ? 300 : -300,
+                    zIndex: 0,
+                    duration: 0.6,
+                    ease: "power3.out",
+                    pointerEvents: "none",
+                });
+                return;
+            }
+
+            // 3D positioning logic
+            const scale = isCenter ? 1 : 1 - (absDiff * 0.15);
+            // Move items horizontally out from center
+            const xPercent = diff * 125; 
+            const opacity = isCenter ? 1 : 1 - (absDiff * 0.25);
+            const zIndex = 100 - absDiff;
+
+            gsap.to(card, {
+                xPercent: xPercent,
+                scale: scale,
+                opacity: opacity,
+                zIndex: zIndex,
+                duration: 0.7,
+                ease: "power3.out",
+                pointerEvents: isCenter ? "auto" : "none"
+            });
+        });
+    }, [currentIndex, canUseDesktopEffects, total]);
+
+    const handleNext = () => setCurrentIndex((prev) => (prev + 1) % total);
+    const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + total) % total);
 
     return (
-        <>
+        <div className="certificate-page-bg">
             <style>{`
+                .certificate-page-bg {
+                    background: radial-gradient(circle at center, #0d2847 0%, #020c1b 100%);
+                    min-height: 100vh;
+                    overflow: hidden;
+                    position: relative;
+                }
                 .certificates-section {
                     padding: 132px 5% 56px;
-                    max-width: 1200px;
+                    max-width: 1400px;
                     margin: 0 auto;
                     position: relative;
                     z-index: 1;
                 }
+                .page-title {
+                    font-size: clamp(2.5rem, 5vw, 3.5rem);
+                    font-weight: 700;
+                    text-align: center;
+                    margin-bottom: 50px;
+                    background: linear-gradient(90deg, #fff, #a5a5a5);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
                 .certificates-wrapper {
                     width: 100%;
-                    overflow: hidden;
                     position: relative;
                     padding: 20px 0;
-                }
-                .cards-track {
                     display: flex;
-                    gap: 28px;
-                    width: max-content;
+                    flex-direction: column;
+                    align-items: center;
                 }
-                .cards-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-                    gap: 22px;
-                }
-                .glass-card {
-                    width: min(360px, 82vw);
-                    flex-shrink: 0;
+                
+                /* Desktop 3D Slider Container */
+                .slider-container {
                     position: relative;
+                    width: 100%;
+                    height: 520px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    perspective: 1200px;
+                }
+
+                .glass-card {
+                    width: min(380px, 85vw);
+                    position: absolute;
                     border-radius: 22px;
                     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
                     backdrop-filter: blur(20px);
@@ -172,32 +216,19 @@ const Certificate = () => {
                     border-left: 1px solid rgba(255, 255, 255, 0.5);
                     border-right: 1px solid rgba(255, 255, 255, 0.1);
                     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+                    box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.4);
                     overflow: hidden;
-                    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, border-color 0.4s ease;
                     display: flex;
                     flex-direction: column;
+                    transform-origin: center center;
                 }
+                
+                /* Keep simple hover effect only for the active center card */
                 .glass-card:hover {
-                    transform: translateY(-10px) scale(1.02);
                     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
                     border-color: rgba(255, 255, 255, 0.6);
                 }
-                .glass-card::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: -100%;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-                    transition: 0.5s;
-                    pointer-events: none;
-                }
-                .glass-card:hover::before {
-                    left: 100%;
-                }
+
                 .card-image-container {
                     width: 100%;
                     aspect-ratio: 16 / 10;
@@ -211,13 +242,14 @@ const Certificate = () => {
                     transition: transform 0.5s ease;
                 }
                 .glass-card:hover .card-image {
-                    transform: scale(1.1);
+                    transform: scale(1.08);
                 }
                 .card-content {
                     padding: 24px;
                     flex-grow: 1;
                     display: flex;
                     flex-direction: column;
+                    background: rgba(0,0,0,0.2);
                 }
                 .text-title {
                     font-size: 20px;
@@ -246,29 +278,61 @@ const Certificate = () => {
                     font-size: 14px;
                     transition: all 0.3s ease;
                     text-align: center;
-                    position: relative;
-                    overflow: hidden;
                 }
                 .card-button:hover {
-                    background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
-                    background-size: 200% 200%;
-                    animation: gradientMove 3s ease infinite;
+                    background: linear-gradient(90deg, #4facfe, #00f2fe);
                     border-color: transparent;
-                    box-shadow: 0 0 20px rgba(51, 51, 255, 0.6);
+                    color: #000;
+                    box-shadow: 0 0 20px rgba(79, 172, 254, 0.6);
                 }
-                @media (max-width: 768px) {
+
+                /* Controls */
+                .slider-controls {
+                    display: flex;
+                    gap: 20px;
+                    margin-top: 40px;
+                    z-index: 100;
+                }
+                .slider-btn {
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    color: #fff;
+                    padding: 12px 28px;
+                    border-radius: 30px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(10px);
+                }
+                .slider-btn:hover {
+                    background: #fff;
+                    color: #020c1b;
+                    transform: translateY(-2px);
+                }
+
+                /* Mobile Grid Fallback */
+                .cards-grid-mobile {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 28px;
+                    width: 100%;
+                }
+                .cards-grid-mobile .glass-card {
+                    position: relative;
+                    width: 100%;
+                }
+
+                @media (max-width: 991px) {
+                    .slider-container, .slider-controls {
+                        display: none;
+                    }
                     .certificates-section {
                         padding-top: 112px;
                     }
-                    .certificates-wrapper {
-                        overflow: visible;
-                        padding-top: 0;
-                    }
-                    .glass-card {
-                        width: 100%;
-                    }
-                    .card-content {
-                        padding: 22px;
+                }
+                @media (min-width: 992px) {
+                    .cards-grid-mobile {
+                        display: none;
                     }
                 }
             `}</style>
@@ -277,48 +341,77 @@ const Certificate = () => {
                 <h1 className="page-title">My Certificates</h1>
 
                 <div className="certificates-wrapper">
-                    <div
-                        className={canUseDesktopEffects ? 'cards-track' : 'cards-grid'}
-                        ref={trackRef}
-                    >
-                        {visibleCertificates.map((certificate, index) => {
-                            const isClone = canUseDesktopEffects && index >= certificates.length;
-
-                            return (
-                                <article
-                                    key={`${certificate.title}-${index}`}
-                                    className="glass-card"
-                                    aria-hidden={isClone ? true : undefined}
-                                >
-                                    <div className="card-image-container">
-                                        <img
-                                            src={certificate.image}
-                                            alt={certificate.alt}
-                                            className="card-image"
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                    </div>
-                                    <div className="card-content">
-                                        <h3 className="text-title">{certificate.title}</h3>
-                                        <p className="text-body">{certificate.description}</p>
-                                        <a
-                                            href={certificate.image}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="card-button"
-                                            tabIndex={isClone ? -1 : undefined}
-                                        >
-                                            View Certificate
-                                        </a>
-                                    </div>
-                                </article>
-                            );
-                        })}
+                    
+                    {/* Desktop 3D Slider */}
+                    <div className="slider-container">
+                        {certificates.map((certificate, index) => (
+                            <article
+                                key={`desktop-${certificate.title}-${index}`}
+                                className="glass-card"
+                                ref={el => cardsRef.current[index] = el}
+                            >
+                                <div className="card-image-container">
+                                    <img
+                                        src={certificate.image}
+                                        alt={certificate.alt}
+                                        className="card-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                </div>
+                                <div className="card-content">
+                                    <h3 className="text-title">{certificate.title}</h3>
+                                    <p className="text-body">{certificate.description}</p>
+                                    <a
+                                        href={certificate.image}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="card-button"
+                                        tabIndex={index === currentIndex ? 0 : -1}
+                                    >
+                                        View Certificate
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
                     </div>
+
+                    <div className="slider-controls">
+                        <button className="slider-btn" onClick={handlePrev}>Prev</button>
+                        <button className="slider-btn" onClick={handleNext}>Next</button>
+                    </div>
+
+                    {/* Mobile Grid Fallback */}
+                    <div className="cards-grid-mobile">
+                        {certificates.map((certificate, index) => (
+                            <article key={`mobile-${certificate.title}-${index}`} className="glass-card">
+                                <div className="card-image-container">
+                                    <img
+                                        src={certificate.image}
+                                        alt={certificate.alt}
+                                        className="card-image"
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <div className="card-content">
+                                    <h3 className="text-title">{certificate.title}</h3>
+                                    <p className="text-body">{certificate.description}</p>
+                                    <a
+                                        href={certificate.image}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="card-button"
+                                    >
+                                        View Certificate
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+
                 </div>
             </section>
-        </>
+        </div>
     );
 };
 

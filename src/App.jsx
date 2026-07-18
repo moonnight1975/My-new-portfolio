@@ -7,8 +7,8 @@ import './index.css';
 const About = lazy(() => import('./pages/About'));
 const Project = lazy(() => import('./pages/Project'));
 const Certificate = lazy(() => import('./pages/Certificate'));
-const Cursor = lazy(() => import('./components/Cursor'));
-const BackgroundScene = lazy(() => import('./components/BackgroundScene'));
+import Cursor from './components/Cursor';
+import BackgroundScene from './components/BackgroundScene';
 
 const App = () => {
     const canUseDesktopEffects = useMediaQuery(ENHANCED_UI_QUERY);
@@ -16,10 +16,10 @@ const App = () => {
     return (
         <Router>
             {canUseDesktopEffects ? (
-                <Suspense fallback={null}>
+                <>
                     <BackgroundScene />
                     <Cursor />
-                </Suspense>
+                </>
             ) : null}
             <Suspense fallback={<div className="route-fallback" aria-hidden="true" />}>
                 <Routes>
