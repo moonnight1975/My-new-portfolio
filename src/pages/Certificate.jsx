@@ -3,6 +3,15 @@ import gsap from 'gsap';
 import useMediaQuery, { ENHANCED_UI_QUERY } from '../hooks/useMediaQuery';
 import Navbar from '../components/Navbar'; // Added Navbar for consistency if it's missing, wait, Certificate didn't have Navbar in the snippet but Home did. The user didn't request a Navbar here, but let's just stick to the original structure (no Navbar in Certificate.jsx in the original code).
 
+const internships = [
+    {
+        file: '/WISERLI.pdf',
+        image: '/wiserli_preview.png',
+        title: 'Wiserli Internship',
+        description: 'Successfully completed the internship program at Wiserli, gaining hands-on industry experience and contributing to real-world software development projects.'
+    }
+];
+
 const certificates = [
     {
         image: '/googlecerti.png',
@@ -322,6 +331,30 @@ const Certificate = () => {
                     width: 100%;
                 }
 
+                /* Internships Grid */
+                .internships-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                    gap: 30px;
+                    margin-bottom: 80px;
+                    width: 100%;
+                    max-width: 600px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .pdf-icon-container {
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: transform 0.5s ease;
+                }
+                .glass-card:hover .pdf-icon-container {
+                    transform: scale(1.05);
+                }
+
                 @media (max-width: 991px) {
                     .slider-container, .slider-controls {
                         display: none;
@@ -338,7 +371,47 @@ const Certificate = () => {
             `}</style>
 
             <section className="certificates-section">
-                <h1 className="page-title">My Certificates</h1>
+                <h1 className="page-title">My Internships</h1>
+                <div className="internships-grid">
+                    {internships.map((internship, index) => (
+                        <article key={`intern-${index}`} className="glass-card" style={{position: 'relative', width: '100%'}}>
+                            <div className="card-image-container">
+                                {internship.image ? (
+                                    <img
+                                        src={internship.image}
+                                        alt={internship.title}
+                                        className="card-image"
+                                        loading="lazy"
+                                    />
+                                ) : (
+                                    <div className="pdf-icon-container">
+                                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="card-content">
+                                <h3 className="text-title">{internship.title}</h3>
+                                <p className="text-body">{internship.description}</p>
+                                <a
+                                    href={internship.file}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="card-button"
+                                >
+                                    View Internship Letter
+                                </a>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+
+                <h1 className="page-title" style={{marginTop: '40px'}}>My Certificates</h1>
 
                 <div className="certificates-wrapper">
                     
